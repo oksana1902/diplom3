@@ -1,0 +1,285 @@
+﻿<Page x:Class="StudentPlanner.ViewTask"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:StudentPlanner"
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:models="clr-namespace:StudentPlanner.Models"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ViewTask"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+
+    <Page.Resources>
+        <Style x:Key="LabelText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignSubheadingTextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Padding" Value="0, 10, 40, 0" />
+        </Style>
+
+        <Style x:Key="EditValue" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="0, 10, 0, 0" />
+        </Style>
+
+        <Style x:Key="EditDate" TargetType="{x:Type DatePicker}" BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="0, 10, 0, 0" />
+        </Style>
+
+        <Style x:Key="EditComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="0, 10, 0, 0" />
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
+            <Setter Property="Margin" Value="20, 0, 0, 0" />
+            <Setter Property="Width" Value="160" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="BlanchedAlmond" Name="taskGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="20*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button 
+                HorizontalAlignment="Left"
+                Margin="10, 0, 0, 0"
+                Width="50"
+                Name="GoBack" Click="GoBack_Click">
+                <materialDesign:PackIcon Kind="KeyboardBackspace" />
+            </Button>
+
+            <TextBox
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding Path=Title, Mode=TwoWay}"
+                Style="{StaticResource EditValue}"
+                materialDesign:HintAssist.Hint="Название"
+                Name="tbxTitle" />
+
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="{Binding Path=Description, Mode=TwoWay}"
+                Style="{StaticResource EditValue}"
+                materialDesign:HintAssist.Hint="Описание"
+                TextWrapping="Wrap"
+                VerticalAlignment="Stretch"
+                AcceptsReturn="True"
+                VerticalScrollBarVisibility="Auto"
+                SpellCheck.IsEnabled="True" 
+                Name="tbxDescription" />
+
+            <DatePicker
+                Grid.Row="2"
+                Grid.Column="1"
+                SelectedDate="{Binding Path=DueDatetime, Mode=TwoWay}"
+                Style="{StaticResource EditDate}"
+                materialDesign:HintAssist.Hint="Срок выполнения"
+                Name="dpDueDate" />
+
+            <ComboBox
+                Grid.Row="3"
+                Grid.Column="1"
+                IsEditable="True"
+                IsReadOnly="True"
+                SelectedItem="{Binding Path=Priority, Mode=TwoWay}"
+                Style="{StaticResource EditComboBox}"
+                materialDesign:HintAssist.Hint="Приоритет" 
+                Name="cbxPriority" />
+        </Grid>
+
+        <ContentControl Name="taskInfo" Grid.Row="1">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type models:ExamTask}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="60*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding Path=Subject, Mode=TwoWay}"
+                            Style="{StaticResource EditValue}"
+                            materialDesign:HintAssist.Hint="Предмет"
+                            Name="tbxExamSubject" />
+
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding Path=PercentageWorth, Mode=TwoWay}"
+                            Style="{StaticResource EditValue}"
+                            PreviewTextInput="NumberValidationTextBox"
+                            materialDesign:HintAssist.Hint="Процент"
+                            Name="tbxExamPercentage" />
+
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding Path=Materials, Mode=TwoWay}"
+                            Style="{StaticResource EditValue}"
+                            materialDesign:HintAssist.Hint="Необходимые материалы"
+                            Name="tbxExamMaterials" />
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type models:AssignmentTask}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="60*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding Path=Subject, Mode=TwoWay}"
+                            Style="{StaticResource EditValue}"
+                            materialDesign:HintAssist.Hint="Предмет"
+                            Name="tbxAssignmentSubject" />
+
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding Path=PercentageWorth, Mode=TwoWay}"
+                            Style="{StaticResource EditValue}"
+                            PreviewTextInput="NumberValidationTextBox"
+                            materialDesign:HintAssist.Hint="Процент"
+                            Name="tbxAssignmentPercentage" />
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type models:EventTask}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="60*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding Path=Location, Mode=TwoWay}"
+                            Style="{StaticResource EditValue}"
+                            materialDesign:HintAssist.Hint="Место проведения"
+                            Name="tbxLocation" />
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type models:PaymentTask}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="60*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding Path=Amount, Mode=TwoWay}"
+                            Style="{StaticResource EditValue}"
+                            PreviewTextInput="NumberValidationTextBox"
+                            materialDesign:HintAssist.Hint="Сумма"
+                            Name="tbxAmount" />
+                    </Grid>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+
+        <Grid Grid.Row="2" Margin="0, 40, 0, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160*"/>
+                <ColumnDefinition Width="369*"/>
+                <ColumnDefinition Width="111*"/>
+                <ColumnDefinition Width="160*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="1" HorizontalAlignment="Right" Grid.ColumnSpan="2" Margin="0,0,0,-0.2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ContentControl Name="btnStart" Grid.Column="0">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type models:ExamTask}">
+                            <Button Content="Начать экзамен" Click="StartTask" Style="{StaticResource ActionButton}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type models:AssignmentTask}">
+                            <Button Content="Начать выполнение задания" Click="StartTask" Style="{StaticResource ActionButton}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type models:EventTask}">
+                            <Button Content="Начать событие" Click="StartTask" Style="{StaticResource ActionButton}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type models:PaymentTask}" />
+                    </ContentControl.Resources>
+                </ContentControl>
+
+                <ContentControl Name="btnPause" Grid.Column="0">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type models:ExamTask}" />
+                        <DataTemplate DataType="{x:Type models:AssignmentTask}">
+                            <Button Content="Приостановить" Click="PauseTask" Style="{StaticResource ActionButton}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type models:EventTask}">
+                            <Button Content="Приостановить" Click="PauseTask" Style="{StaticResource ActionButton}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type models:PaymentTask}" />
+                    </ContentControl.Resources>
+                </ContentControl>
+
+                <Button Name="completeButton" Grid.Column="1" Content="Ок" Click="CompleteTask" Style="{StaticResource ActionButton}" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
